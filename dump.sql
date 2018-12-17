@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: electric_iot
 -- ------------------------------------------------------
--- Server version	5.7.16-log
+-- Server version	5.7.20-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -36,20 +36,12 @@ INSERT INTO `department` VALUES (1,'苏州工业园区服务外包职业学院',
 UNLOCK TABLES;
 
 --
--- Dumping data for table `department_device_relation`
---
-
-LOCK TABLES `department_device_relation` WRITE;
-/*!40000 ALTER TABLE `department_device_relation` DISABLE KEYS */;
-/*!40000 ALTER TABLE `department_device_relation` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping data for table `device`
 --
 
 LOCK TABLES `device` WRITE;
 /*!40000 ALTER TABLE `device` DISABLE KEYS */;
+INSERT INTO `device` VALUES (1,'HD-001','123456','HD-001','HD123456',0,1,1,1,1,'测试设备说明','2018-12-17 08:56:36',60,180,300),(2,'HD-002','234567','HD-002','HD234567',0,2,1,1,1,'测试设备说明','2018-12-17 08:57:23',60,180,300);
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -104,6 +96,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `status` WRITE;
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
+INSERT INTO `status` VALUES (1,'在线'),(2,'离线');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,6 +106,7 @@ UNLOCK TABLES;
 
 LOCK TABLES `type` WRITE;
 /*!40000 ALTER TABLE `type` DISABLE KEYS */;
+INSERT INTO `type` VALUES (1,'高压测试设备'),(2,'低压测试设备');
 /*!40000 ALTER TABLE `type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,4 +146,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-19 22:39:06
+-- Dump completed on 2018-12-17 16:58:42
