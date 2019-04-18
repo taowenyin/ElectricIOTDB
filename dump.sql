@@ -29,15 +29,15 @@ CREATE TABLE `bind_user_department_role` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `department_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `role_id` bigint(20) DEFAULT NULL COMMENT '角色ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  KEY `FK_USER_BUDR_U_idx` (`user_id`) USING BTREE,
-  KEY `FK_DEPARTMENT_BUDR_D_idx` (`department_id`) USING BTREE,
-  KEY `FK_ROLE_BUDR_R_idx` (`role_id`) USING BTREE,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_USER_BUDR_U_idx` (`user_id`),
+  KEY `FK_DEPARTMENT_BUDR_D_idx` (`department_id`),
+  KEY `FK_ROLE_BUDR_R_idx` (`role_id`),
   CONSTRAINT `FK_DEPARTMENT_BUDR_D` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`),
   CONSTRAINT `FK_ROLE_BUDR_R` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
   CONSTRAINT `FK_USER_BUDR_U` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户与角色和部门的绑定';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户与角色和部门的绑定';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,14 +59,14 @@ DROP TABLE IF EXISTS `department`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `department` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '部门名称',
+  `name` varchar(255) NOT NULL COMMENT '部门名称',
   `level` int(11) NOT NULL DEFAULT '0' COMMENT '部门等级',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '部门是否删除，0表示未删除，1表示删除',
   `parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级组织的ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='部门数据表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='部门数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -88,32 +88,33 @@ DROP TABLE IF EXISTS `device`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `device` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `uid` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '设备自定义ID',
-  `imsi` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '设备的IMSI',
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '设备名称',
-  `serial_number` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '设备序列号',
+  `uid` varchar(45) DEFAULT NULL COMMENT '设备自定义ID',
+  `imsi` varchar(45) NOT NULL COMMENT '设备的IMSI',
+  `name` varchar(45) DEFAULT NULL COMMENT '设备名称',
+  `serial_number` varchar(200) DEFAULT NULL COMMENT '设备序列号',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '设备是否删除，0表示未删除，1表示删除',
   `type_id` bigint(20) DEFAULT NULL COMMENT '设备类型ID',
   `status_id` bigint(20) DEFAULT NULL COMMENT '设备状态ID',
   `user_id` bigint(20) DEFAULT NULL COMMENT '设备所属的用户ID',
   `department_id` bigint(20) DEFAULT NULL COMMENT '设备所属的部门ID',
-  `comment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '设备描述',
+  `comment` varchar(200) DEFAULT NULL COMMENT '设备描述',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '设备创建时间',
   `keep_live_interval` int(11) NOT NULL DEFAULT '60' COMMENT '设备心跳间隔，默认60秒',
   `battery_sleep_time` int(11) NOT NULL DEFAULT '180' COMMENT '电源供电时的休眠时间，默认180分钟',
   `battery_keep_live_time` int(11) NOT NULL DEFAULT '300' COMMENT '电池供电时心跳包发送后保持连接的时间，默认300秒',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  UNIQUE KEY `imsi_UNIQUE` (`imsi`) USING BTREE,
-  KEY `FK_TYPE_DEVICE_idx` (`type_id`) USING BTREE,
-  KEY `FK_STATUS_DEVICE_idx` (`status_id`) USING BTREE,
-  KEY `FK_USER_D_U_idx` (`user_id`) USING BTREE,
-  KEY `FK_DEPARTMENT_D_D_idx` (`department_id`) USING BTREE,
+  `server_ip` varchar(45) NOT NULL DEFAULT '172.81.239.174:65001' COMMENT '服务器IP',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `imsi_UNIQUE` (`imsi`),
+  KEY `FK_TYPE_DEVICE_idx` (`type_id`),
+  KEY `FK_STATUS_DEVICE_idx` (`status_id`),
+  KEY `FK_USER_D_U_idx` (`user_id`),
+  KEY `FK_DEPARTMENT_D_D_idx` (`department_id`),
   CONSTRAINT `FK_DEPARTMENT_D_D` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`),
   CONSTRAINT `FK_STATUS_D_S` FOREIGN KEY (`status_id`) REFERENCES `status` (`id`),
   CONSTRAINT `FK_TYPE_D_T` FOREIGN KEY (`type_id`) REFERENCES `type` (`id`),
   CONSTRAINT `FK_USER_D_U` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='设备信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='设备信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +123,7 @@ CREATE TABLE `device` (
 
 LOCK TABLES `device` WRITE;
 /*!40000 ALTER TABLE `device` DISABLE KEYS */;
-INSERT INTO `device` VALUES (1,'HD-001','123456','HD-001','HD123456',0,1,1,1,1,'测试设备说明','2018-12-17 08:56:36',40,120,30),(2,'HD-002','234567','HD-002','HD234567',0,2,1,1,1,'测试设备说明','2018-12-17 08:57:23',60,180,300),(3,'HD-003','345678','HD-001','HD345678',0,2,1,1,1,'测试设备说明','2018-12-25 21:47:51',50,180,300),(14,'HD-T12','123456789',NULL,NULL,0,NULL,NULL,NULL,NULL,'-1','2018-12-26 14:26:39',60,180,300),(15,'123','460042189102974',NULL,NULL,0,NULL,NULL,NULL,NULL,'-1','2019-01-02 16:37:22',60,180,300),(16,NULL,'460042189102978',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,'2019-01-02 22:27:01',60,180,300);
+INSERT INTO `device` VALUES (1,'HD-001','123456','HD-001','HD123456',0,1,1,1,1,'测试设备说明','2018-12-17 08:56:36',40,120,30,'172.81.239.174:65001'),(2,'HD-002','234567','HD-002','HD234567',0,2,1,1,1,'测试设备说明','2018-12-17 08:57:23',60,180,300,'172.81.239.174:65001'),(3,'HD-003','345678','HD-001','HD345678',0,2,1,1,1,'测试设备说明','2018-12-25 21:47:51',50,180,300,'172.81.239.174:65001'),(14,'HD-T12','123456789',NULL,NULL,0,NULL,NULL,NULL,NULL,'-1','2018-12-26 14:26:39',60,180,300,'172.81.239.174:65001'),(15,'123','460042189102974',NULL,NULL,0,NULL,NULL,NULL,NULL,'-1','2019-01-02 16:37:22',60,180,300,'172.81.239.174:65001'),(16,NULL,'460042189102978',NULL,NULL,0,NULL,NULL,NULL,NULL,NULL,'2019-01-02 22:27:01',60,180,300,'172.81.239.174:65001');
 /*!40000 ALTER TABLE `device` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,9 +139,9 @@ CREATE TABLE `device_cmd` (
   `device_id` bigint(20) NOT NULL,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建命令的时间',
   `get_imsi` tinyint(1) DEFAULT NULL COMMENT '查询设备的IMSI，1表示该指令需要执行',
-  `set_device_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '当该位不为null是，表示需要设置设备的名称',
+  `set_device_name` varchar(45) DEFAULT NULL COMMENT '当该位不为null是，表示需要设置设备的名称',
   `get_device_name` tinyint(1) DEFAULT NULL COMMENT '查询设备的名称，1表示该指令需要执行',
-  `set_device_ip` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '当该位不为null是，表示需要设置设备的IP',
+  `set_device_ip` varchar(45) DEFAULT NULL COMMENT '当该位不为null是，表示需要设置设备的IP',
   `get_device_ip` tinyint(1) DEFAULT NULL COMMENT '当该位不为null是，表示得到设备的IP',
   `set_keep_live_interval` int(11) DEFAULT NULL COMMENT '当该位不为null是，表示需要设置设备的心跳间隔时间',
   `get_keep_live_interval` tinyint(1) DEFAULT NULL COMMENT '当该位不为null是，表示需要获取设备的心跳间隔时间',
@@ -151,11 +152,11 @@ CREATE TABLE `device_cmd` (
   `get_battery_keep_live_time` tinyint(1) DEFAULT NULL COMMENT '当该位不为null是，表示需要获取设备电池供电时保持链接的时间',
   `send_time` datetime DEFAULT NULL COMMENT '发送命令的时间',
   `is_send` tinyint(1) DEFAULT '0' COMMENT '该条指令是否已经发送，0表示未发送，1表示已发送',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  KEY `FK_DEVICE_D_D_idx` (`device_id`) USING BTREE,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_DEVICE_D_D_idx` (`device_id`),
   CONSTRAINT `FK_DEVICE_D_D` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='预向设备发送的指令';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='预向设备发送的指令';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -215,12 +216,12 @@ CREATE TABLE `device_location` (
   `community_num_4` int(11) DEFAULT NULL,
   `station_flag_4` int(11) DEFAULT NULL,
   `signal_strength_4` int(11) DEFAULT NULL,
-  `is_delete` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  KEY `FK_DEVICE_LOCATION_idx` (`device_id`) USING BTREE,
+  `is_delete` tinyint(1) DEFAULT '0' COMMENT '是否删除，0表示没删除，1表示逻辑删除',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_DEVICE_LOCATION_idx` (`device_id`),
   CONSTRAINT `FK_DEVICE_DL_D` FOREIGN KEY (`device_id`) REFERENCES `device` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1191 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='设备实时位置数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=1189 DEFAULT CHARSET=utf8 COMMENT='设备实时位置数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,12 +243,12 @@ DROP TABLE IF EXISTS `right`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `right` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限名称',
-  `description` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限描述',
+  `name` varchar(45) NOT NULL COMMENT '权限名称',
+  `description` varchar(200) NOT NULL COMMENT '权限描述',
   `parent_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级权限的ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限数据表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,13 +269,13 @@ DROP TABLE IF EXISTS `role`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
+  `name` varchar(45) NOT NULL COMMENT '角色名称',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '角色创建时间',
-  `comment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '角色描述',
+  `comment` varchar(200) DEFAULT NULL COMMENT '角色描述',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '角色是否删除，0表示未删除，1表示删除',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色数据表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -297,13 +298,13 @@ CREATE TABLE `role_right_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   `right_id` bigint(20) NOT NULL COMMENT '权限ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  KEY `FK_ROLE_RELATION_idx` (`role_id`) USING BTREE,
-  KEY `FK_RIGHT_RELATION_idx` (`right_id`) USING BTREE,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_ROLE_RELATION_idx` (`role_id`),
+  KEY `FK_RIGHT_RELATION_idx` (`right_id`),
   CONSTRAINT `FK_RIGHT_RRR_R` FOREIGN KEY (`right_id`) REFERENCES `right` (`id`),
   CONSTRAINT `FK_ROLE_RRR_R` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限数据表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,10 +325,10 @@ DROP TABLE IF EXISTS `status`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `status` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '设备状态名称，1表示电池，2表示上电',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='设备状态数据表';
+  `name` varchar(45) NOT NULL COMMENT '设备状态名称，1表示电池，2表示上电',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='设备状态数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,10 +350,10 @@ DROP TABLE IF EXISTS `type`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `type` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '设备类型名称',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='设备类型数据表';
+  `name` varchar(45) NOT NULL COMMENT '设备类型名称',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='设备类型数据表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,17 +375,17 @@ DROP TABLE IF EXISTS `user`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `login_name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登录帐户',
-  `login_password` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登录密码',
-  `name` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `login_name` varchar(45) NOT NULL COMMENT '登录帐户',
+  `login_password` varchar(45) NOT NULL COMMENT '登录密码',
+  `name` varchar(45) NOT NULL COMMENT '用户名',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '用户创建时间',
-  `mobile` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户电话',
-  `email` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户邮件',
+  `mobile` varchar(45) DEFAULT NULL COMMENT '用户电话',
+  `email` varchar(45) DEFAULT NULL COMMENT '用户邮件',
   `is_delete` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户是否删除，0表示未删除，1表示删除',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  UNIQUE KEY `login_name_UNIQUE` (`login_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户信息表';
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  UNIQUE KEY `login_name_UNIQUE` (`login_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -408,13 +409,13 @@ CREATE TABLE `user_right_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `right_id` bigint(20) NOT NULL COMMENT '权限ID',
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `id_UNIQUE` (`id`) USING BTREE,
-  KEY `FK_DEPARTMENT_RIGHT_RELATION_idx` (`right_id`) USING BTREE,
-  KEY `FK_USER_RELATION_idx` (`user_id`) USING BTREE,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `FK_DEPARTMENT_RIGHT_RELATION_idx` (`right_id`),
+  KEY `FK_USER_RELATION_idx` (`user_id`),
   CONSTRAINT `FK_RIGHT_URR_R` FOREIGN KEY (`right_id`) REFERENCES `right` (`id`),
   CONSTRAINT `FK_USER_URIR_U` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户权限关系表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户权限关系表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,7 +485,8 @@ SET character_set_client = utf8mb4;
  1 AS `create_time`,
  1 AS `keep_live_interval`,
  1 AS `battery_sleep_time`,
- 1 AS `battery_keep_live_time`*/;
+ 1 AS `battery_keep_live_time`,
+ 1 AS `server_ip`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -534,7 +536,8 @@ SET character_set_client = utf8mb4;
  1 AS `location_num_4`,
  1 AS `community_num_4`,
  1 AS `station_flag_4`,
- 1 AS `signal_strength_4`*/;
+ 1 AS `signal_strength_4`,
+ 1 AS `is_delete`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -576,7 +579,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_get_all_device_info` AS select `device`.`id` AS `id`,`device`.`uid` AS `uid`,`device`.`imsi` AS `imsi`,`device`.`name` AS `name`,`device`.`serial_number` AS `serial_number`,`device`.`is_delete` AS `is_delete`,`device`.`type_id` AS `type_id`,`type`.`name` AS `type`,`device`.`status_id` AS `status_id`,`status`.`name` AS `status`,`device`.`user_id` AS `user_id`,`user`.`name` AS `user`,`device`.`department_id` AS `department_id`,`department`.`name` AS `department`,`device`.`comment` AS `comment`,`device`.`create_time` AS `create_time`,`device`.`keep_live_interval` AS `keep_live_interval`,`device`.`battery_sleep_time` AS `battery_sleep_time`,`device`.`battery_keep_live_time` AS `battery_keep_live_time` from ((((`device` left join `status` on((`device`.`status_id` = `status`.`id`))) left join `type` on((`device`.`type_id` = `type`.`id`))) left join `user` on((`device`.`user_id` = `user`.`id`))) left join `department` on((`device`.`department_id` = `department`.`id`))) */;
+/*!50001 VIEW `view_get_all_device_info` AS select `device`.`id` AS `id`,`device`.`uid` AS `uid`,`device`.`imsi` AS `imsi`,`device`.`name` AS `name`,`device`.`serial_number` AS `serial_number`,`device`.`is_delete` AS `is_delete`,`device`.`type_id` AS `type_id`,`type`.`name` AS `type`,`device`.`status_id` AS `status_id`,`status`.`name` AS `status`,`device`.`user_id` AS `user_id`,`user`.`name` AS `user`,`device`.`department_id` AS `department_id`,`department`.`name` AS `department`,`device`.`comment` AS `comment`,`device`.`create_time` AS `create_time`,`device`.`keep_live_interval` AS `keep_live_interval`,`device`.`battery_sleep_time` AS `battery_sleep_time`,`device`.`battery_keep_live_time` AS `battery_keep_live_time`,`device`.`server_ip` AS `server_ip` from ((((`device` left join `status` on((`device`.`status_id` = `status`.`id`))) left join `type` on((`device`.`type_id` = `type`.`id`))) left join `user` on((`device`.`user_id` = `user`.`id`))) left join `department` on((`device`.`department_id` = `department`.`id`))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -594,7 +597,7 @@ SET character_set_client = @saved_cs_client;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `view_get_device_last_location` AS select `device_location`.`id` AS `id`,`device_location`.`device_id` AS `device_id`,`device_location`.`record_time` AS `record_time`,`device_location`.`device_time` AS `device_time`,`device_location`.`signal_quality` AS `signal_quality`,`device_location`.`device_on_off` AS `device_on_off`,`device_location`.`battery_voltage` AS `battery_voltage`,`device_location`.`longitude` AS `longitude`,`device_location`.`longitude_direction` AS `longitude_direction`,`device_location`.`latitude` AS `latitude`,`device_location`.`latitude_direction` AS `latitude_direction`,`device_location`.`province` AS `province`,`device_location`.`city` AS `city`,`device_location`.`district` AS `district`,`device_location`.`agps_station_num` AS `agps_station_num`,`device_location`.`nation_num_1` AS `nation_num_1`,`device_location`.`mobile_num_1` AS `mobile_num_1`,`device_location`.`location_num_1` AS `location_num_1`,`device_location`.`community_num_1` AS `community_num_1`,`device_location`.`station_flag_1` AS `station_flag_1`,`device_location`.`signal_strength_1` AS `signal_strength_1`,`device_location`.`nation_num_2` AS `nation_num_2`,`device_location`.`mobile_num_2` AS `mobile_num_2`,`device_location`.`location_num_2` AS `location_num_2`,`device_location`.`community_num_2` AS `community_num_2`,`device_location`.`station_flag_2` AS `station_flag_2`,`device_location`.`signal_strength_2` AS `signal_strength_2`,`device_location`.`nation_num_3` AS `nation_num_3`,`device_location`.`mobile_num_3` AS `mobile_num_3`,`device_location`.`location_num_3` AS `location_num_3`,`device_location`.`community_num_3` AS `community_num_3`,`device_location`.`station_flag_3` AS `station_flag_3`,`device_location`.`signal_strength_3` AS `signal_strength_3`,`device_location`.`nation_num_4` AS `nation_num_4`,`device_location`.`mobile_num_4` AS `mobile_num_4`,`device_location`.`location_num_4` AS `location_num_4`,`device_location`.`community_num_4` AS `community_num_4`,`device_location`.`station_flag_4` AS `station_flag_4`,`device_location`.`signal_strength_4` AS `signal_strength_4` from `device_location` where (`device_location`.`device_id`,`device_location`.`device_time`) in (select `device_location`.`device_id`,max(`device_location`.`device_time`) from `device_location` group by `device_location`.`device_id`) */;
+/*!50001 VIEW `view_get_device_last_location` AS select `device_location`.`id` AS `id`,`device_location`.`device_id` AS `device_id`,`device_location`.`record_time` AS `record_time`,`device_location`.`device_time` AS `device_time`,`device_location`.`signal_quality` AS `signal_quality`,`device_location`.`device_on_off` AS `device_on_off`,`device_location`.`battery_voltage` AS `battery_voltage`,`device_location`.`longitude` AS `longitude`,`device_location`.`longitude_direction` AS `longitude_direction`,`device_location`.`latitude` AS `latitude`,`device_location`.`latitude_direction` AS `latitude_direction`,`device_location`.`province` AS `province`,`device_location`.`city` AS `city`,`device_location`.`district` AS `district`,`device_location`.`agps_station_num` AS `agps_station_num`,`device_location`.`nation_num_1` AS `nation_num_1`,`device_location`.`mobile_num_1` AS `mobile_num_1`,`device_location`.`location_num_1` AS `location_num_1`,`device_location`.`community_num_1` AS `community_num_1`,`device_location`.`station_flag_1` AS `station_flag_1`,`device_location`.`signal_strength_1` AS `signal_strength_1`,`device_location`.`nation_num_2` AS `nation_num_2`,`device_location`.`mobile_num_2` AS `mobile_num_2`,`device_location`.`location_num_2` AS `location_num_2`,`device_location`.`community_num_2` AS `community_num_2`,`device_location`.`station_flag_2` AS `station_flag_2`,`device_location`.`signal_strength_2` AS `signal_strength_2`,`device_location`.`nation_num_3` AS `nation_num_3`,`device_location`.`mobile_num_3` AS `mobile_num_3`,`device_location`.`location_num_3` AS `location_num_3`,`device_location`.`community_num_3` AS `community_num_3`,`device_location`.`station_flag_3` AS `station_flag_3`,`device_location`.`signal_strength_3` AS `signal_strength_3`,`device_location`.`nation_num_4` AS `nation_num_4`,`device_location`.`mobile_num_4` AS `mobile_num_4`,`device_location`.`location_num_4` AS `location_num_4`,`device_location`.`community_num_4` AS `community_num_4`,`device_location`.`station_flag_4` AS `station_flag_4`,`device_location`.`signal_strength_4` AS `signal_strength_4`,`device_location`.`is_delete` AS `is_delete` from `device_location` where (`device_location`.`device_id`,`device_location`.`device_time`) in (select `device_location`.`device_id`,max(`device_location`.`device_time`) from `device_location` group by `device_location`.`device_id`) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -608,4 +611,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-18 17:23:01
+-- Dump completed on 2019-04-18 20:58:14
